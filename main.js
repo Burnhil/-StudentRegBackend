@@ -69,7 +69,23 @@ const getAll = async() => {
     }
 }
 
+//setting up the add student method
+const addStudent = async(studentObj) => {
+    try {
+        //create a student document based off student object
+        const newStudent = new Student(studentObj); 
 
+        //setting up promise to use to show insertion of document 
+        let savePromise = newStudent.save();   
+        savePromise.then((newStudentDoc) => {
+            //print out insertion doc
+            console.log(`The Tree doc is saved and now has the id of ${newStudentDoc.id} and added to the Tree collection.`);
+        });
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
 
 //async functions can be called in the top-level of your code, but they CANNOT USE await.
 //to get around that, create an entry point function that is async and then call your other async functions in that.
@@ -78,6 +94,22 @@ const main = async() => {
     // you can also write regular JS code here as well
     await connectToDB();
     await getAll();
+
+    //create a new student to be added with add method
+    let aNewStudent = {
+        FirstName: "Alexis",
+        LastName: "Snowbird",
+        Major: "Real Estate",
+        PhoneNumber: "804-677-8741",
+        Address: "1679 West 3rd",
+        City: "Lubbock",
+        State: "Texas",
+        Zip: 79012,
+        RegistrationStatus: "Yes"
+    }
+
+    //call add method
+    await addStudent(aNewStudent);
 }
 
 //calling the main entry point
